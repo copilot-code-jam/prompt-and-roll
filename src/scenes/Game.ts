@@ -1,5 +1,6 @@
-import { Scene } from "phaser";
+import { GameObjects, Scene } from "phaser";
 import { GameState } from "../GameState";
+import { FlashText, MessageType } from "../utils/FlashText";
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera;
@@ -16,6 +17,8 @@ export class Game extends Scene {
   coins: GameObjects.Text;
   score: number;
   gameState: GameState;
+  flashText: FlashText;
+  sentimentTalks: Record<MessageType, string[]>;
 
   constructor() {
     super("Game");
@@ -48,20 +51,46 @@ export class Game extends Scene {
 
     // Initialize score
     this.score = this.gameState.getScore();
-    this.scoreText = this.add.text(300, 0, "Score: " + this.gameState.getScore(), {
-        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
-        stroke: '#000000', strokeThickness: 6
-    }).setOrigin(0, 0);
+    this.scoreText = this.add
+      .text(300, 0, "Score: " + this.gameState.getScore(), {
+        fontFamily: "Arial Black",
+        fontSize: 24,
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 6,
+      })
+      .setOrigin(0, 0);
 
-    this.level = this.add.text(0, 0, "Level: " + this.gameState.getCurrentLevel(), {
-        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
-        stroke: '#000000', strokeThickness: 6
-    }).setOrigin(0, 0);
-    
-    this.coins = this.add.text(150, 0, "Coins: " + this.gameState.getTotalCoins(), {
-        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
-        stroke: '#000000', strokeThickness: 6
-    }).setOrigin(0, 0);
+    this.level = this.add
+      .text(0, 0, "Level: " + this.gameState.getCurrentLevel(), {
+        fontFamily: "Arial Black",
+        fontSize: 24,
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 6,
+      })
+      .setOrigin(0, 0);
+
+    this.coins = this.add
+      .text(150, 0, "Coins: " + this.gameState.getTotalCoins(), {
+        fontFamily: "Arial Black",
+        fontSize: 24,
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 6,
+      })
+      .setOrigin(0, 0);
+
+    // Setup flash text
+    this.flashText = new FlashText(this, 512, 384);
+
+    // Load sentiment talks
+    fetch("src/trash-talk.json")
+      .then((response) => response.json())
+      .then((data) => {
+        this.sentimentTalks = data.sentiment_type_talks;
+        this.flashText.setMessages(this.sentimentTalks);
+      });
 
     // Input handling - Space key for jump
     this.spaceKey = this.input?.keyboard?.addKey(
@@ -216,14 +245,24 @@ export class Game extends Scene {
     this.gameState.setScore(this.gameState.getScore() + 5);
     this.score += this.gameState.getScore();
     this.scoreText.setText("Score: " + this.score);
+    this.showFlashMessage("positive");
   }
 
   addScore() {
     this.score++;
     this.scoreText.setText("Score: " + this.score);
+    if (this.score % 5 === 0) {
+      this.showFlashMessage("neutral");
+    }
+  }
+
+  showFlashMessage(type: MessageType) {
+    if (!this.sentimentTalks) return;
+    this.flashText.show(type);
   }
 
   hitPipe() {
+    this.showFlashMessage("negative");
     this.endGame();
   }
 
