@@ -1,4 +1,5 @@
 type GameStatus = 'PLAY' | 'GAMEOVER' | 'WON';
+type DialogCategory = 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE';
 
 export class GameState {
     private totalCoins: number;
@@ -7,6 +8,11 @@ export class GameState {
     private status: GameStatus;
     private earnStreak: number;
     private loseStreak: number;
+    private dialogCategory: DialogCategory;
+    private dialogNeutralStreak: number;
+    private dialogPositiveStreak: number;
+    private dialogNegativeStreak: number;
+
 
     private static minCoinsPerLevel = new Map<number, number>([
         [1, 10],
@@ -29,6 +35,10 @@ export class GameState {
         this.earnStreak = 0;
         this.loseStreak = 0;
         this.score = 0;
+        this.dialogCategory = "NEUTRAL";
+        this.dialogNeutralStreak = 0;
+        this.dialogPositiveStreak = 0;
+        this.dialogNegativeStreak = 0;
     }
 
     public static getInstance(): GameState {
