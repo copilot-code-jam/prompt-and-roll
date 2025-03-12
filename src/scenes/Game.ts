@@ -246,14 +246,14 @@ export class Game extends Scene {
     this.gameState.setScore(this.gameState.getScore() + 5);
     this.score += this.gameState.getScore();
     this.scoreText.setText("Score: " + this.score);
-    this.showFlashMessage("NEUTRAL");
+    this.showFlashMessage("POSITIVE");
   }
 
   addScore() {
     this.score++;
     this.scoreText.setText("Score: " + this.score);
     if (this.score % 5 === 0) {
-      this.showFlashMessage("NEUTRAL");
+      this.showFlashMessage("POSITIVE");
     }
   }
 
