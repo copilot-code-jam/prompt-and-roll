@@ -8,21 +8,21 @@ export class Game extends Scene {
   pipes: Phaser.Physics.Arcade.Group;
   stars: Phaser.Physics.Arcade.Group;
   scoreText: Phaser.GameObjects.Text;
-  score: number;
   spaceKey: Phaser.Input.Keyboard.Key;
   gameOver: boolean;
   pipeInterval: Phaser.Time.TimerEvent;
   starInterval: Phaser.Time.TimerEvent;
   level: GameObjects.Text;
   coins: GameObjects.Text;
+  score: number;
+  gameState: GameState;
 
   constructor() {
     super("Game");
+    this.gameState = GameState.getInstance();
   }
 
   create() {
-    const gameState = GameState.getInstance();
-
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x87ceeb); // Sky blue background
 
@@ -47,21 +47,18 @@ export class Game extends Scene {
     this.stars = this.physics.add.group();
 
     // Initialize score
-    this.score = 0;
-    this.scoreText = this.add.text(16, 16, "Score: 0", {
-      fontFamily: "Arial Black",
-      fontSize: "24px",
-      color: "#ffffff",
-      stroke: "#000000",
-      strokeThickness: 4,
-    });
+    this.score = this.gameState.getScore();
+    this.scoreText = this.add.text(300, 0, "Score: " + this.gameState.getScore(), {
+        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
+        stroke: '#000000', strokeThickness: 6
+    }).setOrigin(0, 0);
 
-    this.level = this.add.text(0, 0, "Level: " + gameState.getCurrentLevel(), {
+    this.level = this.add.text(0, 0, "Level: " + this.gameState.getCurrentLevel(), {
         fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
         stroke: '#000000', strokeThickness: 6
     }).setOrigin(0, 0);
     
-    this.coins = this.add.text(150, 0, "Coins: " + gameState.getTotalCoins(), {
+    this.coins = this.add.text(150, 0, "Coins: " + this.gameState.getTotalCoins(), {
         fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
         stroke: '#000000', strokeThickness: 6
     }).setOrigin(0, 0);
@@ -216,7 +213,8 @@ export class Game extends Scene {
       | Phaser.Physics.Arcade.Body
   ) {
     (star as Phaser.GameObjects.GameObject).destroy();
-    this.score += 5;
+    this.gameState.setScore(this.gameState.getScore() + 5);
+    this.score += this.gameState.getScore();
     this.scoreText.setText("Score: " + this.score);
   }
 
@@ -235,8 +233,8 @@ export class Game extends Scene {
     this.starInterval.remove();
     this.player.setTint(0xff0000);
 
-    this.time.delayedCall(1500, () => {
-      this.scene.start("GameOver", { score: this.score });
-    });
+    // this.time.delayedCall(1500, () => {
+    //   this.scene.start("GameOver", { score: this.score });
+    // });
   }
 }

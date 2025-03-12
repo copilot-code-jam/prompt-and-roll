@@ -28,6 +28,7 @@ export class GameState {
         this.status = 'PLAY';
         this.earnStreak = 0;
         this.loseStreak = 0;
+        this.score = 0;
     }
 
     public static getInstance(): GameState {
