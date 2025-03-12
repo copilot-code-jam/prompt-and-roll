@@ -3,6 +3,7 @@ type GameStatus = 'PLAY' | 'GAMEOVER' | 'WON';
 export class GameState {
     private totalCoins: number;
     private currentLevel: number;
+    private score: number;
     private status: GameStatus;
     private earnStreak: number;
     private loseStreak: number;
@@ -42,6 +43,14 @@ export class GameState {
 
     public getTotalCoins(): number {
         return this.totalCoins;
+    }
+
+    public setScore(score: number): void {
+        this.score = score;
+    }
+    
+    public getScore(): number {
+        return this.score;
     }
 
     public setCurrentLevel(level: number): void {
