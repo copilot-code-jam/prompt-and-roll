@@ -19,6 +19,7 @@ export class Game extends Scene {
   gameState: GameState;
   flashText: FlashText;
   sentimentTalks: Record<DialogCategory, string[]>;
+  asteroid: Phaser.GameObjects.Sprite;
 
   constructor() {
     super("Game");
@@ -28,7 +29,7 @@ export class Game extends Scene {
   create() {
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x87ceeb); // Sky blue background
-
+    this.asteroid = this.add.sprite(512, 200, 'asteroid', 15);
     // Add scrolling background
     this.background = this.add.image(512, 384, "background");
     this.background.setAlpha(1);
@@ -37,7 +38,7 @@ export class Game extends Scene {
     this.physics.world.setBounds(0, 0, 1024, 768);
 
     // Create player
-    this.player = this.physics.add.sprite(200, 384, "logo");
+    this.player = this.physics.add.sprite(200, 384, "cat");
     this.player.setScale(0.5);
     this.player.setCircle(30, 20, 20);
     this.player.setBounce(0.1);
@@ -200,7 +201,7 @@ export class Game extends Scene {
     const gapStart = Phaser.Math.Between(100, 668 - gap);
 
     // Create top pipe
-    const topPipe = this.pipes.create(1100, gapStart - 320, "logo");
+    const topPipe = this.pipes.create(0, gapStart - 320, "cat");
     topPipe.setOrigin(0.5, 1);
     topPipe.setImmovable(true);
     topPipe.setScale(0.7, 3);
@@ -209,7 +210,7 @@ export class Game extends Scene {
     topPipe.scored = false;
 
     // Create bottom pipe
-    const bottomPipe = this.pipes.create(1100, gapStart + gap, "logo");
+    const bottomPipe = this.pipes.create(1100, gapStart + gap, "asteroid");
     bottomPipe.setOrigin(0.5, 0);
     bottomPipe.setImmovable(true);
     bottomPipe.setScale(0.7, 3);
