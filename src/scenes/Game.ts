@@ -263,6 +263,10 @@ export class Game extends Scene {
   }
 
   hitPipe() {
+    if (this.gameOver) {
+        return;
+    };
+
     this.showFlashMessage("NEGATIVE");
     this.endGame();
   }
@@ -273,8 +277,8 @@ export class Game extends Scene {
     this.starInterval.remove();
     this.player.setTint(0xff0000);
 
-    // this.time.delayedCall(1500, () => {
-    //   this.scene.start("GameOver", { score: this.score });
-    // });
+    this.time.delayedCall(1500, () => {
+      this.scene.start("GameOver", { score: this.score });
+    });
   }
 }
