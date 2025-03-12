@@ -20,16 +20,18 @@ export class Game extends Scene {
   flashText: FlashText;
   sentimentTalks: Record<DialogCategory, string[]>;
   asteroid: Phaser.GameObjects.Sprite;
+  asteroidDirection: number = 1;
 
   constructor() {
     super("Game");
     this.gameState = GameState.getInstance();
+    this.asteroidDirection = 1;
   }
 
   create() {
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x87ceeb); // Sky blue background
-    this.asteroid = this.add.sprite(512, 200, 'asteroid', 15);
+    this.asteroid = this.add.sprite(512, 200, "asteroid", 15);
     // Add scrolling background
     this.background = this.add.image(512, 384, "background");
     this.background.setAlpha(1);
@@ -201,7 +203,7 @@ export class Game extends Scene {
     const gapStart = Phaser.Math.Between(100, 668 - gap);
 
     // Create top pipe
-    const topPipe = this.pipes.create(0, gapStart - 320, "cat");
+    const topPipe = this.pipes.create(1100, gapStart - 320, "logo");
     topPipe.setOrigin(0.5, 1);
     topPipe.setImmovable(true);
     topPipe.setScale(0.7, 3);
@@ -210,12 +212,19 @@ export class Game extends Scene {
     topPipe.scored = false;
 
     // Create bottom pipe
-    const bottomPipe = this.pipes.create(1100, gapStart + gap, "asteroid");
+    const bottomPipe = this.pipes.create(1100, gapStart + gap, "logo");
     bottomPipe.setOrigin(0.5, 0);
     bottomPipe.setImmovable(true);
     bottomPipe.setScale(0.7, 3);
     bottomPipe.body.setAllowGravity(false);
     bottomPipe.setVelocityX(-200);
+
+    this.asteroid.y += this.asteroidDirection;
+    if (this.asteroid.y >= 400) {
+      this.asteroidDirection = -1;
+    } else if (this.asteroid.y <= 200) {
+      this.asteroidDirection = 1;
+    }
   }
 
   addStar() {
@@ -259,14 +268,14 @@ export class Game extends Scene {
 
   showFlashMessage(type: DialogCategory) {
     if (!this.sentimentTalks) return;
-    
+
     this.flashText.show(type);
   }
 
   hitPipe() {
     if (this.gameOver) {
-        return;
-    };
+      return;
+    }
 
     this.showFlashMessage("NEGATIVE");
     this.endGame();
