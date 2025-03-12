@@ -203,7 +203,7 @@ export class Game extends Scene {
     const gapStart = Phaser.Math.Between(100, 668 - gap);
 
     // Create top pipe
-    const topPipe = this.pipes.create(1100, gapStart - 320, "logo");
+    const topPipe = this.pipes.create(1100, gapStart - 320, "asteroid");
     topPipe.setOrigin(0.5, 1);
     topPipe.setImmovable(true);
     topPipe.setScale(0.7, 3);
@@ -212,7 +212,7 @@ export class Game extends Scene {
     topPipe.scored = false;
 
     // Create bottom pipe
-    const bottomPipe = this.pipes.create(1100, gapStart + gap, "logo");
+    const bottomPipe = this.pipes.create(1100, gapStart + gap, "asteroid");
     bottomPipe.setOrigin(0.5, 0);
     bottomPipe.setImmovable(true);
     bottomPipe.setScale(0.7, 3);
