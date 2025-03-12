@@ -1,5 +1,5 @@
 import { GameObjects, Scene } from "phaser";
-import { GameState } from "../GameState";
+import { GameState, DialogCategory } from "../GameState";
 import { FlashText, MessageType } from "../utils/FlashText";
 
 export class Game extends Scene {
@@ -18,7 +18,7 @@ export class Game extends Scene {
   score: number;
   gameState: GameState;
   flashText: FlashText;
-  sentimentTalks: Record<MessageType, string[]>;
+  sentimentTalks: Record<DialogCategory, string[]>;
 
   constructor() {
     super("Game");
@@ -245,7 +245,7 @@ export class Game extends Scene {
     this.gameState.setScore(this.gameState.getScore() + 5);
     this.score += this.gameState.getScore();
     this.scoreText.setText("Score: " + this.score);
-    this.showFlashMessage("positive");
+    this.showFlashMessage(this.gameState);
   }
 
   addScore() {
@@ -256,9 +256,10 @@ export class Game extends Scene {
     }
   }
 
-  showFlashMessage(type: MessageType) {
+  showFlashMessage(type: DialogCategory) {
     if (!this.sentimentTalks) return;
-    this.flashText.show(type);
+
+    this.flashText.show(this.sentimentTalks[type.toLowerCase()]);
   }
 
   hitPipe() {

@@ -1,5 +1,5 @@
-type GameStatus = 'PLAY' | 'GAMEOVER' | 'WON';
-type DialogCategory = 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE';
+export type GameStatus = 'PLAY' | 'GAMEOVER' | 'WON';
+export type DialogCategory = 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE';
 
 export class GameState {
     private totalCoins: number;

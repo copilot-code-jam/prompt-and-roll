@@ -1,6 +1,6 @@
 {
   "sentiment_type_talks": {
-    "neutral": [
+    "NEUTRAL": [
       "Just testing your reflexes",
       "Gotta keep it interesting.",
       "Missed on purpose, obviously.",
@@ -8,7 +8,7 @@
       "Setting up the big play."
     ],
 
-    "positive": [
+    "POSITIVE": [
       "I’m on fire today.",
       "I’m basically the MVP, no big deal.",
       "Winning always feels good",
@@ -16,7 +16,7 @@
       "I make this look easy, huh?"
     ],
 
-    "negative": [
+    "NEGATIVE": [
       "Well, that was a masterpiece of failure.",
       "Is the spacebar broken, or...?",
       "I didn’t know you could miss that badly.”",

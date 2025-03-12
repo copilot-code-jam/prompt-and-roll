@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { DialogCategory } from "../GameState";
 
 export type MessageType = "positive" | "negative" | "neutral";
 
@@ -18,14 +19,14 @@ export class FlashText {
     });
     this.text.setOrigin(0.5);
     this.text.setAlpha(0);
-    this.messages = {} as Record<MessageType, string[]>;
+    this.messages = {} as Record<DialogCategory, string[]>;
   }
 
   setMessages(messages: Record<MessageType, string[]>) {
     this.messages = messages;
   }
 
-  show(type: MessageType) {
+  show(type: DialogCategory) {
     if (!this.messages[type]) return;
 
     const messages = this.messages[type];
