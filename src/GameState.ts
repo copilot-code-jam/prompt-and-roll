@@ -1,6 +1,6 @@
 type GameStatus = 'PLAY' | 'GAMEOVER' | 'WON';
 
-class GameState {
+export class GameState {
     private totalCoins: number;
     private currentLevel: number;
     private status: GameStatus;
