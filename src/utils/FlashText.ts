@@ -13,7 +13,7 @@ export class FlashText {
     this.text = scene.add.text(x, y, "", {
       fontFamily: "Arial Black",
       fontSize: "32px",
-      color: "#ffffff",
+      color: "#ff0000",
       stroke: "#000000",
       strokeThickness: 6,
     });
@@ -38,7 +38,7 @@ export class FlashText {
     this.scene.tweens.add({
       targets: this.text,
       alpha: 0,
-      duration: 3000,
+      duration: 7000,
       ease: "Power2",
     });
   }
