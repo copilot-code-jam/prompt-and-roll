@@ -5,11 +5,13 @@ export class Game extends Scene {
   background: Phaser.GameObjects.Image;
   player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   pipes: Phaser.Physics.Arcade.Group;
+  stars: Phaser.Physics.Arcade.Group;
   scoreText: Phaser.GameObjects.Text;
   score: number;
   spaceKey: Phaser.Input.Keyboard.Key;
   gameOver: boolean;
   pipeInterval: Phaser.Time.TimerEvent;
+  starInterval: Phaser.Time.TimerEvent;
 
   constructor() {
     super("Game");
@@ -35,6 +37,9 @@ export class Game extends Scene {
 
     // Setup pipes group
     this.pipes = this.physics.add.group();
+
+    // Setup stars group
+    this.stars = this.physics.add.group();
 
     // Initialize score
     this.score = 0;
@@ -62,11 +67,28 @@ export class Game extends Scene {
       loop: true,
     });
 
+    // Start generating stars
+    this.starInterval = this.time.addEvent({
+      delay: 2000,
+      callback: this.addStar,
+      callbackScope: this,
+      loop: true,
+    });
+
     // Collision detection
     this.physics.add.collider(
       this.player,
       this.pipes,
       this.hitPipe,
+      undefined,
+      this
+    );
+
+    // Add star collection collision
+    this.physics.add.overlap(
+      this.player,
+      this.stars,
+      this.collectStar,
       undefined,
       this
     );
@@ -112,6 +134,13 @@ export class Game extends Scene {
       }
     });
 
+    // Remove stars that are off screen
+    this.stars.getChildren().forEach((star: any) => {
+      if (star.x < -50) {
+        star.destroy();
+      }
+    });
+
     // Game over if player hits bottom or top
     if (this.player.y >= 768 - this.player.height || this.player.y <= 0) {
       this.endGame();
@@ -147,6 +176,35 @@ export class Game extends Scene {
     bottomPipe.setVelocityX(-200);
   }
 
+  addStar() {
+    if (this.gameOver) return;
+
+    const star = this.stars.create(
+      1100,
+      Phaser.Math.Between(100, 668),
+      "cyan-star"
+    );
+    star.setScale(0.5);
+    star.setCircle(25);
+    star.body.setAllowGravity(false);
+    star.setVelocityX(-200);
+  }
+
+  collectStar(
+    _:
+      | Phaser.Types.Physics.Arcade.GameObjectWithBody
+      | Phaser.Tilemaps.Tile
+      | Phaser.Physics.Arcade.Body,
+    star:
+      | Phaser.Types.Physics.Arcade.GameObjectWithBody
+      | Phaser.Tilemaps.Tile
+      | Phaser.Physics.Arcade.Body
+  ) {
+    (star as Phaser.GameObjects.GameObject).destroy();
+    this.score += 5;
+    this.scoreText.setText("Score: " + this.score);
+  }
+
   addScore() {
     this.score++;
     this.scoreText.setText("Score: " + this.score);
@@ -159,6 +217,7 @@ export class Game extends Scene {
   endGame() {
     this.gameOver = true;
     this.pipeInterval.remove();
+    this.starInterval.remove();
     this.player.setTint(0xff0000);
 
     this.time.delayedCall(1500, () => {

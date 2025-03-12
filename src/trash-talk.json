@@ -1,12 +1,27 @@
 {
-    "sentiment_type_talks":
-    
-    {"neutral": ["Just testing your reflexes","Gotta keep it interesting.","Missed on purpose, obviously.","Keeping you on your toes.","Setting up the big play."],
-                            
-        "positive": ["I’m on fire today.", "I’m basically the MVP, no big deal.", "Winning always feels good", "I’d say good luck, but I don’t need it.", "I make this look easy, huh?"],
-                                
-            "negative": ["Well, that was a masterpiece of failure.", "Is the spacebar broken, or...?", "I didn’t know you could miss that badly.”", "Did the game glitch, or was that u?", "That’s one way to lose, I guess."]
-        
-    }
+  "sentiment_type_talks": {
+    "neutral": [
+      "Just testing your reflexes",
+      "Gotta keep it interesting.",
+      "Missed on purpose, obviously.",
+      "Keeping you on your toes.",
+      "Setting up the big play."
+    ],
 
+    "positive": [
+      "I’m on fire today.",
+      "I’m basically the MVP, no big deal.",
+      "Winning always feels good",
+      "I’d say good luck, but I don’t need it.",
+      "I make this look easy, huh?"
+    ],
+
+    "negative": [
+      "Well, that was a masterpiece of failure.",
+      "Is the spacebar broken, or...?",
+      "I didn’t know you could miss that badly.”",
+      "Did the game glitch, or was that u?",
+      "That’s one way to lose, I guess."
+    ]
+  }
 }
