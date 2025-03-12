@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { GameState } from '../GameState';
 
 export class Boot extends Scene
 {
@@ -17,6 +18,8 @@ export class Boot extends Scene
 
     create ()
     {
+        const gameState = GameState.getInstance();
+
         this.scene.start('Preloader');
     }
 }

@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { GameState } from '../GameState';
 
 export class GameOver extends Scene
 {
@@ -20,6 +21,8 @@ export class GameOver extends Scene
 
     create ()
     {
+        const gameState = GameState.getInstance();
+
         this.camera = this.cameras.main
         this.camera.setBackgroundColor(0xff0000);
 

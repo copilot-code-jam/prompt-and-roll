@@ -19,12 +19,21 @@ export class GameState {
         [3, 15]
     ]);
 
-    constructor() {
+    private static instance: GameState;
+
+    private constructor() {
         this.totalCoins = 0;
         this.currentLevel = 1;
         this.status = 'PLAY';
         this.earnStreak = 0;
         this.loseStreak = 0;
+    }
+
+    public static getInstance(): GameState {
+        if (!GameState.instance) {
+            GameState.instance = new GameState();
+        }
+        return GameState.instance;
     }
 
     public setTotalCoins(coins: number): void {

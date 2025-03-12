@@ -1,4 +1,5 @@
 import { Scene } from "phaser";
+import { GameState } from "../GameState";
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera;
@@ -12,12 +13,16 @@ export class Game extends Scene {
   gameOver: boolean;
   pipeInterval: Phaser.Time.TimerEvent;
   starInterval: Phaser.Time.TimerEvent;
+  level: GameObjects.Text;
+  coins: GameObjects.Text;
 
   constructor() {
     super("Game");
   }
 
   create() {
+    const gameState = GameState.getInstance();
+
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor(0x87ceeb); // Sky blue background
 
@@ -50,6 +55,16 @@ export class Game extends Scene {
       stroke: "#000000",
       strokeThickness: 4,
     });
+
+    this.level = this.add.text(0, 0, "Level: " + gameState.getCurrentLevel(), {
+        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
+        stroke: '#000000', strokeThickness: 6
+    }).setOrigin(0, 0);
+    
+    this.coins = this.add.text(150, 0, "Coins: " + gameState.getTotalCoins(), {
+        fontFamily: 'Arial Black', fontSize: 24, color: '#ffffff',
+        stroke: '#000000', strokeThickness: 6
+    }).setOrigin(0, 0);
 
     // Input handling - Space key for jump
     this.spaceKey = this.input?.keyboard?.addKey(
